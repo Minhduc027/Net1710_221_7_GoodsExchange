@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GoodsExchange.business
 {
-    internal class CustomerBusiness : ICustomerBusiness
+    public class CustomerBusiness : ICustomerBusiness
     {
         private readonly Net1710_221_7_GoodsExchangeContext _context;
         public CustomerBusiness(Net1710_221_7_GoodsExchangeContext context)
