@@ -1,4 +1,5 @@
 ﻿using GoodsExchange.business.Interface;
+using GoodsExchange.data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
