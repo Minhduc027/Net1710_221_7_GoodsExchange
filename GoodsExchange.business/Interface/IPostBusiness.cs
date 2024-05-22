@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GoodsExchange.data.Models;
 
 namespace GoodsExchange.business.Interface
 {
     public interface IPostBusiness
     {
         public Task<IGoodsExchangeResult> GetAll();
-        public Task<IGoodsExchangeResult> Create();
-        public Task<IGoodsExchangeResult> Update();
-        public Task<IGoodsExchangeResult> Delete();
+        public Task<IGoodsExchangeResult> Create(Post post);
+        public Task<IGoodsExchangeResult> Update(Post post);
+        public Task<IGoodsExchangeResult> Delete(int postId);
         
     }
 }
