@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GoodExchange.commons\GoodExchange.commons.csproj" />
-    <ProjectReference Include="..\GoodsExchange.data\GoodsExchange.data.csproj" />
-  </ItemGroup>
-
 </Project>

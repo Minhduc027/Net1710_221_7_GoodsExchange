@@ -1,4 +1,5 @@
-﻿using GoodsExchange.business.Interface;
+﻿using GoodExchange.commons;
+using GoodsExchange.business.Interface;
 using GoodsExchange.data.DAO;
 using GoodsExchange.data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,19 +14,11 @@ namespace GoodsExchange.business
 
     public class PostBusiness : IPostBusiness
     {
-        private static string CREATE_SUCCESS = "Create successfully!";
-        private static string ERROR_EXECUTING_TASK = "Error while executing task: ";
-        private static string NOT_FOUND = "Post not found";
-        private static string DELETED = "Post deleted: ";
-        private static string SUCCESS = "Task executed successfully: ";
-
-        private readonly Net1710_221_7_GoodsExchangeContext _context;
         private readonly PostDAO _postDAO;
 
-        public PostBusiness(Net1710_221_7_GoodsExchangeContext context)
+        public PostBusiness()
         {
             _postDAO = new PostDAO();
-            _context = context;
         }
 
         public async Task<IGoodsExchangeResult> Create(Post postCreate)
@@ -35,11 +28,17 @@ namespace GoodsExchange.business
                 //await _context.AddAsync(postCreate);
                 //await _context.SaveChangesAsync();
                 int result = await _postDAO.CreateAsync(postCreate);
-
-                return new GoodsExchangeResult(0, CREATE_SUCCESS, postCreate);
+                if(result > 0) 
+                { 
+                    return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.CREATE_SUCCESS, postCreate); 
+                }
+                else
+                {
+                    return new GoodsExchangeResult(Constant.NOTHING_WERE_CHANGED_STATUS, Constant.ERROR_EXECUTING_TASK, "Create failed!");
+                }
             } catch (Exception ex)
             {
-                return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -50,7 +49,7 @@ namespace GoodsExchange.business
                 var post = await _postDAO.GetByIdAsync(postId);
                 if (post == null)
                 {
-                    return new GoodsExchangeResult(-1, NOT_FOUND);
+                    return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
                 }
                 //var comments = _context.Comments.Where(c => c.PostId == post.PostId).ToList();
                 //_context.Comments.RemoveRange(comments);
@@ -61,11 +60,17 @@ namespace GoodsExchange.business
                 //await _context.SaveChangesAsync();
 
                 bool result = _postDAO.Remove(post);
-
-                return new GoodsExchangeResult(0, DELETED + result, post);
+                if (result)
+                {
+                    return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.DELETED, post);
+                }
+                else
+                {
+                    return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK);
+                }
             } catch(Exception ex)
             {
-                return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -76,24 +81,35 @@ namespace GoodsExchange.business
                 var result = await _postDAO.GetAllAsync();
                 //var postList = await _context.Posts.Include(c => c.Comments).Include(o => o.OfferDetails)
                 //    .ToListAsync();
-                return new GoodsExchangeResult(0, SUCCESS + "Get all Post.", result);
+                if(result == null)
+                {
+                    return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS_EMPTY);
+                }else
+                {
+                    return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Get all Post.", result);
+                }
             } catch(Exception ex)
             {
-                return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
         public async Task<IGoodsExchangeResult> GetByCreateDate(DateTime createDate)
         {
             try
-            {
-                
-                var result = await _context.Posts.Where(p => p.CreateDate == createDate).ToListAsync();
-
-                return new GoodsExchangeResult(0, SUCCESS + "Get posts by create date.", result);
+            { 
+                var result = await _postDAO.GetPostByCreateDateAsync(createDate);
+                if(result == null)
+                {
+                    return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS_EMPTY + $" No post created on: {createDate}.");
+                }
+                else
+                {
+                    return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + $" Get posts created on: {createDate}.", result);
+                }             
             } catch (Exception ex)
             {
-                return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -104,12 +120,12 @@ namespace GoodsExchange.business
                 var result = await _postDAO.GetByIdAsync(id);
                 if(result == null)
                 {
-                    return new GoodsExchangeResult(-1, NOT_FOUND);
+                    return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
                 }
-                return new GoodsExchangeResult(0, SUCCESS + "Get post by Id.", result);
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Get post by Id.", result);
             } catch(Exception ex)
             {
-                return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -117,15 +133,15 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await _context.Posts.Include(p => p.PostOwnerId == userId).ToListAsync();
+                var result = await _postDAO.GetPostByCreateUserAsync(userId);
                 if(result == null)
                 {
-                    return new GoodsExchangeResult(0, SUCCESS + "Get User's post", "This user haven't create any post yet!");
+                    return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS_EMPTY + "Get User's post", "This user haven't create any post yet!");
                 }
-                return new GoodsExchangeResult(0, SUCCESS + $"Get User {userId} post!", result);
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + $"Get User {userId} post!", result);
             } catch(Exception ex)
             {
-                return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -136,7 +152,7 @@ namespace GoodsExchange.business
                 var post = await _postDAO.GetByIdAsync(postUpdate.PostId);
                 if(post == null)
                 {
-                    return new GoodsExchangeResult(-1, NOT_FOUND);
+                    return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
                 }
                 post.Title = postUpdate.Title;
                 post.Description = postUpdate.Description;
@@ -145,10 +161,10 @@ namespace GoodsExchange.business
                 post.CategoryId = postUpdate.Category.CategoryId;
                 _postDAO.Update(post);
 
-                return new GoodsExchangeResult(0, SUCCESS + "Post updated!", post);
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Post updated!", post);
             } catch(Exception ex)
             {
-                return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
     }

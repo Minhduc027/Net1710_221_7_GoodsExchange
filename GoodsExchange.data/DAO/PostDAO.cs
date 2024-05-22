@@ -1,5 +1,6 @@
 ﻿using GoodsExchange.data.Base;
 using GoodsExchange.data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,13 @@ namespace GoodsExchange.data.DAO
     {
         public PostDAO() { }
 
+        public async Task<List<Post>> GetPostByCreateDateAsync(DateTime createDate) 
+        {
+            return await _context.Posts.Where(p => p.CreateDate == createDate).ToListAsync();
+        }
+        public async Task<List<Post>> GetPostByCreateUserAsync(int userId)
+        {
+            return await _context.Posts.Include(p => p.PostOwnerId == userId).ToListAsync();
+        }
     }
 }
