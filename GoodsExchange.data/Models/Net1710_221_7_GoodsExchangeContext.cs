@@ -12,9 +12,14 @@ public partial class Net1710_221_7_GoodsExchangeContext : DbContext
         : base(options)
     {
     }
+
+    public Net1710_221_7_GoodsExchangeContext()
+    {
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("data source=MAY-CAY-101;initial catalog=Net1710_221_7_GoodsExchange;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("data source=(local);initial catalog=Net1710_221_7_GoodsExchange;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
         base.OnConfiguring(optionsBuilder);
     }
 

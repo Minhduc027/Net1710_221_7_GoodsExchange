@@ -1,4 +1,5 @@
 ﻿using GoodsExchange.business.Interface;
+using GoodsExchange.data.DAO;
 using GoodsExchange.data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,11 +16,15 @@ namespace GoodsExchange.business
         private static string CREATE_SUCCESS = "Create successfully!";
         private static string ERROR_EXECUTING_TASK = "Error while executing task: ";
         private static string NOT_FOUND = "Post not found";
-        private static string DELETED = "Post deleted!";
+        private static string DELETED = "Post deleted: ";
         private static string SUCCESS = "Task executed successfully: ";
+
         private readonly Net1710_221_7_GoodsExchangeContext _context;
+        private readonly PostDAO _postDAO;
+
         public PostBusiness(Net1710_221_7_GoodsExchangeContext context)
         {
+            _postDAO = new PostDAO();
             _context = context;
         }
 
@@ -27,8 +32,9 @@ namespace GoodsExchange.business
         {
             try
             {
-                await _context.AddAsync(postCreate);
-                await _context.SaveChangesAsync();
+                //await _context.AddAsync(postCreate);
+                //await _context.SaveChangesAsync();
+                int result = await _postDAO.CreateAsync(postCreate);
 
                 return new GoodsExchangeResult(0, CREATE_SUCCESS, postCreate);
             } catch (Exception ex)
@@ -41,7 +47,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var post = await _context.Posts.FindAsync(postId);
+                var post = await _postDAO.GetByIdAsync(postId);
                 if (post == null)
                 {
                     return new GoodsExchangeResult(-1, NOT_FOUND);
@@ -54,10 +60,9 @@ namespace GoodsExchange.business
                 //_context.OfferDetails.RemoveRange(offerDetails);
                 //await _context.SaveChangesAsync();
 
-                _context.Posts.Remove(post);
-                await _context.SaveChangesAsync();
+                bool result = _postDAO.Remove(post);
 
-                return new GoodsExchangeResult(0, DELETED, post);
+                return new GoodsExchangeResult(0, DELETED + result, post);
             } catch(Exception ex)
             {
                 return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
@@ -68,9 +73,10 @@ namespace GoodsExchange.business
         {
             try
             {
-                var postList = await _context.Posts.Include(c => c.Comments).Include(o => o.OfferDetails)
-                    .ToListAsync();
-                return new GoodsExchangeResult(0, SUCCESS + "Get all Post.", postList);
+                var result = await _postDAO.GetAllAsync();
+                //var postList = await _context.Posts.Include(c => c.Comments).Include(o => o.OfferDetails)
+                //    .ToListAsync();
+                return new GoodsExchangeResult(0, SUCCESS + "Get all Post.", result);
             } catch(Exception ex)
             {
                 return new GoodsExchangeResult(-1, ERROR_EXECUTING_TASK + ex.Message);
@@ -81,6 +87,7 @@ namespace GoodsExchange.business
         {
             try
             {
+                
                 var result = await _context.Posts.Where(p => p.CreateDate == createDate).ToListAsync();
 
                 return new GoodsExchangeResult(0, SUCCESS + "Get posts by create date.", result);
@@ -94,7 +101,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await _context.Posts.FindAsync(id);
+                var result = await _postDAO.GetByIdAsync(id);
                 if(result == null)
                 {
                     return new GoodsExchangeResult(-1, NOT_FOUND);
@@ -126,7 +133,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var post =  await _context.Posts.FindAsync(postUpdate.PostId);
+                var post = await _postDAO.GetByIdAsync(postUpdate.PostId);
                 if(post == null)
                 {
                     return new GoodsExchangeResult(-1, NOT_FOUND);
@@ -136,7 +143,7 @@ namespace GoodsExchange.business
                 post.Address = postUpdate.Address;
                 post.Category = postUpdate.Category;
                 post.CategoryId = postUpdate.Category.CategoryId;
-                await _context.SaveChangesAsync();
+                _postDAO.Update(post);
 
                 return new GoodsExchangeResult(0, SUCCESS + "Post updated!", post);
             } catch(Exception ex)
