@@ -1,24 +1,19 @@
 ﻿using GoodExchange.commons;
 using GoodsExchange.business.Interface;
-using GoodsExchange.data.DAO;
+using GoodsExchange.data;
 using GoodsExchange.data.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodsExchange.business
 {
 
     public class PostBusiness : IPostBusiness
     {
-        private readonly PostDAO _postDAO;
-
+        //private readonly PostDAO _postDAO;
+        private readonly UnitOfWork unitOfWork;
         public PostBusiness()
         {
-            _postDAO = new PostDAO();
+            //_postDAO = new PostDAO();
+            unitOfWork ??= new UnitOfWork();
         }
 
         public async Task<IGoodsExchangeResult> Create(Post postCreate)
@@ -27,8 +22,9 @@ namespace GoodsExchange.business
             {
                 //await _context.AddAsync(postCreate);
                 //await _context.SaveChangesAsync();
-                int result = await _postDAO.CreateAsync(postCreate);
-                if(result > 0) 
+                //int result = await _postDAO.CreateAsync(postCreate);
+                int result = await unitOfWork.PostRepository.CreateAsync(postCreate);
+                if (result > 0) 
                 { 
                     return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.CREATE_SUCCESS, postCreate); 
                 }
@@ -46,7 +42,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var post = await _postDAO.GetByIdAsync(postId);
+                var post = await unitOfWork.PostRepository.GetByIdAsync(postId);
                 if (post == null)
                 {
                     return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
@@ -59,7 +55,7 @@ namespace GoodsExchange.business
                 //_context.OfferDetails.RemoveRange(offerDetails);
                 //await _context.SaveChangesAsync();
 
-                bool result = _postDAO.Remove(post);
+                bool result = unitOfWork.PostRepository.Remove(post);
                 if (result)
                 {
                     return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.DELETED, post);
@@ -78,7 +74,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await _postDAO.GetAllAsync();
+                var result = await unitOfWork.PostRepository.GetAllAsync();
                 //var postList = await _context.Posts.Include(c => c.Comments).Include(o => o.OfferDetails)
                 //    .ToListAsync();
                 if(result == null)
@@ -98,7 +94,7 @@ namespace GoodsExchange.business
         {
             try
             { 
-                var result = await _postDAO.GetPostByCreateDateAsync(createDate);
+                var result = await  unitOfWork.PostRepository.GetPostByCreateDateAsync(createDate);
                 if(result == null)
                 {
                     return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS_EMPTY + $" No post created on: {createDate}.");
@@ -117,7 +113,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await _postDAO.GetByIdAsync(id);
+                var result = await unitOfWork.PostRepository.GetByIdAsync(id);
                 if(result == null)
                 {
                     return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
@@ -133,7 +129,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await _postDAO.GetPostByCreateUserAsync(userId);
+                var result = await unitOfWork.PostRepository.GetPostByCreateUserAsync(userId);
                 if(result == null)
                 {
                     return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS_EMPTY + "Get User's post", "This user haven't create any post yet!");
@@ -149,7 +145,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var post = await _postDAO.GetByIdAsync(postUpdate.PostId);
+                var post = await unitOfWork.PostRepository.GetByIdAsync(postUpdate.PostId);
                 if(post == null)
                 {
                     return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
@@ -159,7 +155,7 @@ namespace GoodsExchange.business
                 post.Address = postUpdate.Address;
                 post.Category = postUpdate.Category;
                 post.CategoryId = postUpdate.Category.CategoryId;
-                _postDAO.Update(post);
+                unitOfWork.PostRepository.Update(post);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Post updated!", post);
             } catch(Exception ex)

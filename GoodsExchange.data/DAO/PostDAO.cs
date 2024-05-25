@@ -12,14 +12,5 @@ namespace GoodsExchange.data.DAO
     public class PostDAO : BaseDAO<Post>
     {
         public PostDAO() { }
-
-        public async Task<List<Post>> GetPostByCreateDateAsync(DateTime createDate) 
-        {
-            return await _context.Posts.Where(p => p.CreateDate == createDate).ToListAsync();
-        }
-        public async Task<List<Post>> GetPostByCreateUserAsync(int userId)
-        {
-            return await _context.Posts.Include(p => p.PostOwnerId == userId).ToListAsync();
-        }
     }
 }

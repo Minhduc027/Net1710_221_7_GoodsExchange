@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsExchange.business", "G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsExchange.RazorWebApp", "GoodsExchange.RazorWebApp\GoodsExchange.RazorWebApp.csproj", "{089CA53D-16F1-4126-AF6D-EB22BC9344FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodExchange.commons", "GoodExchange.commons\GoodExchange.commons.csproj", "{EDBEE242-6E5D-418A-B024-4D61FCDAC365}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodExchange.commons", "GoodExchange.commons\GoodExchange.commons.csproj", "{EDBEE242-6E5D-418A-B024-4D61FCDAC365}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
