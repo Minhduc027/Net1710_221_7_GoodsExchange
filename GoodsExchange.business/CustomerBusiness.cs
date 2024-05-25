@@ -1,4 +1,6 @@
 ﻿using GoodsExchange.business.Interface;
+using GoodExchange.commons;
+using GoodsExchange.data.DAO;
 using GoodsExchange.data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,24 +13,23 @@ namespace GoodsExchange.business
 {
     public class CustomerBusiness : ICustomerBusiness
     {
-        private readonly Net1710_221_7_GoodsExchangeContext _context;
-        public CustomerBusiness(Net1710_221_7_GoodsExchangeContext context)
+        private readonly CustomerDAO _customerDAO;
+        public CustomerBusiness()
         {
-            _context = context;
+            _customerDAO = new CustomerDAO();
         }
 
         public async Task<IGoodsExchangeResult> CreateCustomer(Customer customer)
         {
             try
-            {
-                _context.Customers.Add(customer);
-                await _context.SaveChangesAsync();
+            {                
+                await _customerDAO.CreateAsync(customer);
 
-                return new GoodsExchangeResult(0, "Customer created successfully", customer);
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.CREATE_SUCCESS, customer);
             }
             catch (Exception ex)
             {
-                return new GoodsExchangeResult(-1, $"Error creating customer: {ex.Message}");
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -36,20 +37,19 @@ namespace GoodsExchange.business
         {
             try
             {
-                var customer = await _context.Customers.FindAsync(customerId);
+                var customer = await _customerDAO.GetByIdAsync(customerId);
                 if (customer == null)
                 {
-                    return new GoodsExchangeResult(-1, "Customer not found");
+                    return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
                 }
+                
+                await _customerDAO.RemoveAsync(customer);
 
-                _context.Customers.Remove(customer);
-                await _context.SaveChangesAsync();
-
-                return new GoodsExchangeResult(0, "Customer deleted successfully");
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.DELETED, customer);
             }
             catch (Exception ex)
             {
-                return new GoodsExchangeResult(-1, $"Error deleting customer: {ex.Message}");
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -57,12 +57,12 @@ namespace GoodsExchange.business
         {
             try
             {
-                var customers = await _context.Customers.ToListAsync();
-                return new GoodsExchangeResult(0, "Customers retrieved successfully", customers);
+                var customers = await _customerDAO.GetAllAsync();
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Get all customers.", customers);
             }
             catch (Exception ex)
             {
-                return new GoodsExchangeResult(-1, $"Error retrieving customers: {ex.Message}");
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
 
@@ -70,10 +70,10 @@ namespace GoodsExchange.business
         {
             try
             {
-                var existingCustomer = await _context.Customers.FindAsync(customer.CustomerId);
+                var existingCustomer = await _customerDAO.GetByIdAsync(customer.CustomerId);
                 if (existingCustomer == null)
                 {
-                    return new GoodsExchangeResult(-1, "Customer not found");
+                    return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
                 }
 
                 existingCustomer.Name = customer.Name;
@@ -83,13 +83,13 @@ namespace GoodsExchange.business
                 existingCustomer.Gender = customer.Gender;
                 existingCustomer.Email = customer.Email;
 
-                await _context.SaveChangesAsync();
+                await _customerDAO.UpdateAsync(existingCustomer);
 
-                return new GoodsExchangeResult(0, "Customer updated successfully", existingCustomer);
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Customer updated!", existingCustomer);
             }
             catch (Exception ex)
             {
-                return new GoodsExchangeResult(-1, $"Error updating customer: {ex.Message}");
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
     }
