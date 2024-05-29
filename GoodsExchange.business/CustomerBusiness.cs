@@ -26,7 +26,7 @@ namespace GoodsExchange.business
             try
             {
                 //await _customerDAO.CreateAsync(customer);
-                await unitOfWork.CreateAsync(customer);
+                await unitOfWork.CustomerRepository.CreateAsync(customer);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.CREATE_SUCCESS, customer);
             }
@@ -41,14 +41,14 @@ namespace GoodsExchange.business
             try
             {
                 //var customer = await _customerDAO.GetByIdAsync(customerId);
-                var customer = await unitOfWork.GetByIdAsync(customerId);
+                var customer = await unitOfWork.CustomerRepository.GetByIdAsync(customerId);
                 if (customer == null)
                 {
                     return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
                 }
 
                 //await _customerDAO.RemoveAsync(customer);
-                await unitOfWork.RemoveAsync(customer);
+                await unitOfWork.CustomerRepository.RemoveAsync(customer);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.DELETED, customer);
             }
@@ -63,7 +63,7 @@ namespace GoodsExchange.business
             try
             {
                 //var customers = await _customerDAO.GetAllAsync();
-                var customers = await unitOfWork.GetAllAsync();
+                var customers = await unitOfWork.CustomerRepository.GetAllAsync();
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Get all customers.", customers);
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace GoodsExchange.business
             try
             {
                 //var existingCustomer = await _customerDAO.GetByIdAsync(customer.CustomerId);
-                var existingCustomer = await unitOfWork.GetByIdAsync(customer.CustomerId);
+                var existingCustomer = await unitOfWork.CustomerRepository.GetByIdAsync(customer.CustomerId);
                 if (existingCustomer == null)
                 {
                     return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
@@ -91,7 +91,7 @@ namespace GoodsExchange.business
                 existingCustomer.Email = customer.Email;
 
                 //await _customerDAO.UpdateAsync(existingCustomer);
-                await unitOfWork.UpdateAsync(existingCustomer);
+                await unitOfWork.CustomerRepository.UpdateAsync(existingCustomer);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Customer updated!", existingCustomer);
             }
