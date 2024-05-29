@@ -10,14 +10,19 @@ namespace GoodsExchange.RazorWebApp.Pages
     {
         private readonly IPostBusiness _postBusiness;
         private readonly ICategoryBusiness _categoryBusiness;
-        public PostModel(IPostBusiness postBusiness, ICategoryBusiness categoryBusiness)
+        public PostModel(IPostBusiness postBusiness,
+            ICategoryBusiness categoryBusiness
+            )
         {
             _postBusiness = postBusiness;
             _categoryBusiness = categoryBusiness;
+           
         }
 
         public List<Post> Posts { get; set; }
         public List<Category> Categories { get; set; }
+        public List<Comment> Comments { get; set; }
+
         public async Task OnGetAsync()
         {
             var result = await _postBusiness.GetAll();
@@ -29,7 +34,7 @@ namespace GoodsExchange.RazorWebApp.Pages
             if (category.Status == Constant.SUCCESS_STATUS && category.Data is List<Category>)
             {
                 Categories = (List<Category>)category.Data;
-            }
+            }            
         }
     }
 }

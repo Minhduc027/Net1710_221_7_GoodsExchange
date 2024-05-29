@@ -19,6 +19,8 @@
                     <th>Address</th>
                     <th>Category</th>
                     <th>Created Date</th>
+                    <th>Exchange Date</th>
+                    <th>Comment</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,6 +35,10 @@
                         <a href="#" data-toggle="modal" data-target="#categoryModal">@post.CategoryId</a>
                     </td>
                     <td>@post.CreateDate</td>
+                    <td>@post.ExchangeDate</td>
+                    <td>
+                        <a href="#" data-toggle="modal" data-target="#commentModal">Comments</a>
+                    </td>
                     <td>
                         <a href="/Post/Edit/@post.PostId">Edit</a>
                         <a href="/Post/Delete/@post.PostId">Delete</a>
@@ -79,5 +85,34 @@
                 </div>
             </div>
         </div>
+    </div>
+    <!-- Comment Modal -->
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Comments</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        @foreach (var post in Model.Posts)
+                        {
+                            @foreach (var comment in post.Comments)
+                            {
+                                <li>@comment.Title: @comment.Content</li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </table>
     </div>
 </tbody>

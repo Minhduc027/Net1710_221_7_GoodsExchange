@@ -22,7 +22,7 @@ namespace GoodsExchange.data.Repository
         }
         public async Task<List<Post>> GetAllPost()
         {
-            return await _context.Posts.ToListAsync();
+            return await _context.Posts.Include(p => p.Comments).ToListAsync();
         }
     }
 }

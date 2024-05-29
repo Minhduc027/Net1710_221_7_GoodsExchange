@@ -74,7 +74,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await unitOfWork.PostRepository.GetAllAsync();
+                var result = await unitOfWork.PostRepository.GetAllPost();
                 //var postList = await _context.Posts.Include(c => c.Comments).Include(o => o.OfferDetails)
                 //    .ToListAsync();
                 if(result == null)
