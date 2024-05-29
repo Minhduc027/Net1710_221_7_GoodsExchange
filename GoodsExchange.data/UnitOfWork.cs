@@ -7,10 +7,22 @@ namespace GoodsExchange.data
     {
         private Net1710_221_7_GoodsExchangeContext _context;
         private PostRepository _postRepository;
-        public UnitOfWork() { }
+        private CategoryRepository _categoryRepository;
+        public UnitOfWork(Net1710_221_7_GoodsExchangeContext context)
+        {
+            _context = context;
+        }
+        public UnitOfWork()
+        {
+            _context = new Net1710_221_7_GoodsExchangeContext();
+        }
         public PostRepository PostRepository
         {
             get { return _postRepository ??= new PostRepository(); }
+        }
+        public CategoryRepository CategoryRepository
+        {
+            get { return _categoryRepository ??= new CategoryRepository(); }
         }
     }
 }

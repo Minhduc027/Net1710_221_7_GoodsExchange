@@ -7,7 +7,7 @@ using GoodsExchange.data.Models;
 
 namespace GoodsExchange.business.Interface
 {
-    internal interface ICategoryBusiness
+    public interface ICategoryBusiness
     {
         public Task<IGoodsExchangeResult> GetAllCategory();
         public Task<IGoodsExchangeResult> CreateCategory(Category category);

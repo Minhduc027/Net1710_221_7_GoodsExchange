@@ -20,5 +20,9 @@ namespace GoodsExchange.data.Repository
         {
             return await _context.Posts.Include(p => p.PostOwnerId == userId).ToListAsync();
         }
+        public async Task<List<Post>> GetAllPost()
+        {
+            return await _context.Posts.ToListAsync();
+        }
     }
 }

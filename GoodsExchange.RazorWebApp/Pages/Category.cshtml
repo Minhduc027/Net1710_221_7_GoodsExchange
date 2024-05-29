@@ -1,0 +1,28 @@
+﻿@page
+@model GoodsExchange.RazorWebApp.Pages.CategoryModel
+@{
+    ViewData["Title"] = "Category";
+}
+<h1>Category</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model.Categories)
+        {
+            <tr>
+                <td>@category.CategoryId</td>
+                <td>@category.CategoryName</td>
+                <td>
+                    <a href="/Post/Edit/@category.CategoryId">Edit</a>
+                    <a href="/Post/Delete/@category.CategoryId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

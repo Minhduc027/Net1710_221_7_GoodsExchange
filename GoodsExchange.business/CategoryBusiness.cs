@@ -3,13 +3,18 @@ using GoodsExchange.data.Models;
 using Microsoft.EntityFrameworkCore;
 using GoodsExchange.data.DAO;
 using GoodExchange.commons;
+using GoodsExchange.data;
 namespace GoodsExchange.business
 {
     public class CategoryBusiness : ICategoryBusiness
     {
         private readonly categoryDAO  _categoryDAO;
+        private readonly UnitOfWork unitOfWork;
         public CategoryBusiness()
-        { _categoryDAO = new categoryDAO(); }
+        { 
+            _categoryDAO = new categoryDAO();
+            unitOfWork ??= new UnitOfWork();
+        }
         public async Task<IGoodsExchangeResult> CreateCategory(Category category)
         {
             try
@@ -50,7 +55,8 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await _categoryDAO.GetAllAsync();
+                //var result = await _categoryDAO.GetAllAsync();
+                var result =  await unitOfWork.CategoryRepository.GetAllAsync();
                 if(result == null)
                 {
                     return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS_EMPTY);
