@@ -16,6 +16,8 @@ namespace GoodsExchange.data
         {
             _context = new Net1710_221_7_GoodsExchangeContext();
         }
+        private CustomerRepository _customerRepository;
+        public UnitOfWork() { }
         public PostRepository PostRepository
         {
             get { return _postRepository ??= new PostRepository(); }
@@ -23,6 +25,11 @@ namespace GoodsExchange.data
         public CategoryRepository CategoryRepository
         {
             get { return _categoryRepository ??= new CategoryRepository(); }
+        }
+
+        public CustomerRepository CustomerRepository
+        {
+            get { return _customerRepository ??= new CustomerRepository(); }
         }
     }
 }

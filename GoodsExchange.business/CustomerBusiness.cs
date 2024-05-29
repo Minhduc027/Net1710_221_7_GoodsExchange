@@ -1,6 +1,6 @@
 ﻿using GoodsExchange.business.Interface;
 using GoodExchange.commons;
-using GoodsExchange.data.DAO;
+using GoodsExchange.data;
 using GoodsExchange.data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,17 +13,20 @@ namespace GoodsExchange.business
 {
     public class CustomerBusiness : ICustomerBusiness
     {
-        private readonly CustomerDAO _customerDAO;
+        //private readonly CustomerDAO _customerDAO;
+        private readonly UnitOfWork unitOfWork;
         public CustomerBusiness()
         {
-            _customerDAO = new CustomerDAO();
+            //_customerDAO = new CustomerDAO();
+            unitOfWork ??= new UnitOfWork();
         }
 
         public async Task<IGoodsExchangeResult> CreateCustomer(Customer customer)
         {
             try
-            {                
-                await _customerDAO.CreateAsync(customer);
+            {
+                //await _customerDAO.CreateAsync(customer);
+                await unitOfWork.CreateAsync(customer);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.CREATE_SUCCESS, customer);
             }
@@ -37,13 +40,15 @@ namespace GoodsExchange.business
         {
             try
             {
-                var customer = await _customerDAO.GetByIdAsync(customerId);
+                //var customer = await _customerDAO.GetByIdAsync(customerId);
+                var customer = await unitOfWork.GetByIdAsync(customerId);
                 if (customer == null)
                 {
                     return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
                 }
-                
-                await _customerDAO.RemoveAsync(customer);
+
+                //await _customerDAO.RemoveAsync(customer);
+                await unitOfWork.RemoveAsync(customer);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.DELETED, customer);
             }
@@ -57,7 +62,8 @@ namespace GoodsExchange.business
         {
             try
             {
-                var customers = await _customerDAO.GetAllAsync();
+                //var customers = await _customerDAO.GetAllAsync();
+                var customers = await unitOfWork.GetAllAsync();
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Get all customers.", customers);
             }
             catch (Exception ex)
@@ -70,7 +76,8 @@ namespace GoodsExchange.business
         {
             try
             {
-                var existingCustomer = await _customerDAO.GetByIdAsync(customer.CustomerId);
+                //var existingCustomer = await _customerDAO.GetByIdAsync(customer.CustomerId);
+                var existingCustomer = await unitOfWork.GetByIdAsync(customer.CustomerId);
                 if (existingCustomer == null)
                 {
                     return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
@@ -83,7 +90,8 @@ namespace GoodsExchange.business
                 existingCustomer.Gender = customer.Gender;
                 existingCustomer.Email = customer.Email;
 
-                await _customerDAO.UpdateAsync(existingCustomer);
+                //await _customerDAO.UpdateAsync(existingCustomer);
+                await unitOfWork.UpdateAsync(existingCustomer);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Customer updated!", existingCustomer);
             }
