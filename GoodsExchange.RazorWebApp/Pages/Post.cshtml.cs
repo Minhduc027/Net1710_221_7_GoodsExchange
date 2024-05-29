@@ -10,6 +10,11 @@ namespace GoodsExchange.RazorWebApp.Pages
     {
         private readonly IPostBusiness _postBusiness;
         private readonly ICategoryBusiness _categoryBusiness;
+        public string ErrorCode { get; set; }
+        [BindProperty]
+        public Post Post { get; set; } = default;
+
+
         public PostModel(IPostBusiness postBusiness,
             ICategoryBusiness categoryBusiness
             )
@@ -35,6 +40,19 @@ namespace GoodsExchange.RazorWebApp.Pages
             {
                 Categories = (List<Category>)category.Data;
             }            
+        }
+        public async Task OnPostAsync()
+        {
+            this.Post.CreateDate = DateTime.Now;
+            var result = await _postBusiness.Create(this.Post);
+            if (result != null)
+            {
+                this.ErrorCode = "Success";
+            }
+            else
+            {
+                this.ErrorCode = "SystemError";
+            }
         }
     }
 }
