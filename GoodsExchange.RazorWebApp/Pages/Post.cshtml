@@ -45,11 +45,11 @@
                     </td>
                     <td>
                         <a href="/Post/Edit/@post.PostId">Edit</a>
-                        <a href="/Post/Delete/@post.PostId">Delete</a>
+                        <a href="#" onclick="deletePost(@post.PostId)">Delete</a>
                     </td>
                 </tr>
             }
-            }
+           } 
         </table>
     </div>
 
@@ -170,6 +170,22 @@
 </div>
 @section scripts 
 {
-
+    <script>
+        function deletePost(postId) {
+            if (confirm("Are you sure you want to delete this post?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Post?handler=DeleteAsync",
+                    data: { postId: postId },
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("There was an error deleting the post.");
+                    }
+                });
+            }
+        }
+    </script>
 }
 </>

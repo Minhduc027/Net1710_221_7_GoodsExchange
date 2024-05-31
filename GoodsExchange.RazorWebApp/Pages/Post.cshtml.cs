@@ -41,17 +41,31 @@ namespace GoodsExchange.RazorWebApp.Pages
                 Categories = (List<Category>)category.Data;
             }            
         }
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             this.Post.CreateDate = DateTime.Now;
             var result = await _postBusiness.Create(this.Post);
             if (result != null)
             {
-                this.ErrorCode = "Success";
+                return RedirectToPage("/Post");
             }
             else
             {
                 this.ErrorCode = "SystemError";
+                return Page();
+            }
+        }
+        public async Task<IActionResult> OnPostDeleteAsync(int postId)
+        {
+            var result = await _postBusiness.Delete(postId);
+            if (result.Status == Constant.SUCCESS_STATUS)
+            {
+                return RedirectToPage("/Post");
+            }
+            else
+            {
+                ErrorCode = "SystemError";
+                return Page();
             }
         }
     }
