@@ -43,9 +43,10 @@
                     <td>
                         <a href="#" data-toggle="modal" data-target="#commentModal">Comments</a>
                     </td>
-                    <td>
-                        <a href="/Post/Edit/@post.PostId">Edit</a>
-                        <a href="#" onclick="deletePost(@post.PostId)">Delete</a>
+                    <td class="d-flex justify-content-end">
+                        <a class="btn btn-secondary mr-2" asp-page="/UpdatePost" asp-route-postId="@post.PostId">Edit</a>
+                        <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');"
+                           asp-page-handler="Delete" asp-route-postId="@post.PostId">Delete</a>
                     </td>
                 </tr>
             }
@@ -147,11 +148,11 @@
                     </div>
                     <div class="form-group">
                         <label for="postOwnerId">PostOwner</label>
-                        <input type="number" class="form-control" id="postOwnerId" name="postOwnerId" required>
+                        <input type="number" min="1" class="form-control" id="postOwnerId" name="postOwnerId" required>
                     </div>
                     <div class="form-group">
                         <label for="categoryId">CategoryId</label>
-                        <input type="number" class="form-control" id="categoryId" name="categoryId" required>
+                        <input type="number" min="1" max="5" class="form-control" id="categoryId" name="categoryId" required>
                     </div>
                     <div class="form-group" id="createDateGroup" style="display: none;">
                         <label for="CreateDate">CreateDate</label>
@@ -171,21 +172,7 @@
 @section scripts 
 {
     <script>
-        function deletePost(postId) {
-            if (confirm("Are you sure you want to delete this post?")) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Post?handler=DeleteAsync",
-                    data: { postId: postId },
-                    success: function () {
-                        location.reload();
-                    },
-                    error: function () {
-                        alert("There was an error deleting the post.");
-                    }
-                });
-            }
-        }
+        
     </script>
 }
 </>

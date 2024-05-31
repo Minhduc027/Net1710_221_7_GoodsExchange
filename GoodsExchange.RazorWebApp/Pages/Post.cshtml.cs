@@ -55,7 +55,7 @@ namespace GoodsExchange.RazorWebApp.Pages
                 return Page();
             }
         }
-        public async Task<IActionResult> OnPostDeleteAsync(int postId)
+        public async Task<IActionResult> OnGetDelete(int postId)
         {
             var result = await _postBusiness.Delete(postId);
             if (result.Status == Constant.SUCCESS_STATUS)
@@ -67,6 +67,16 @@ namespace GoodsExchange.RazorWebApp.Pages
                 ErrorCode = "SystemError";
                 return Page();
             }
+        }
+        public async Task<IActionResult> OnPostUpdatePost(int id, string title, string description, string location)
+        {
+            var result = await _postBusiness.GetById(id);
+            var post = (Post)result.Data;
+            post.Title = title;
+            post.Description = description;
+            post.Address = location;
+            await _postBusiness.Update(post);
+            return RedirectToPage();
         }
     }
 }

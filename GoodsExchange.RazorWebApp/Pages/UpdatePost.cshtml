@@ -1,0 +1,40 @@
+﻿@page "{postId:int}"
+@model GoodsExchange.RazorWebApp.Pages.UpdatePostModel
+@{
+}
+<div class="container">
+    <h3>Edit Post</h3>
+    <hr/>
+    <br/>
+    <form method="post">
+        <input asp-for="Post.PostId" type="hidden" />
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="Post.Title"></label>
+                <input asp-for="Post.Title" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="Post.Description"></label>
+                <input asp-for="Post.Description" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="Post.Address"></label>
+                <input asp-for="Post.Address" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="Post.CategoryId"></label>
+                <input asp-for="Post.CategoryId" class="form-control" type="number" min="1" max="5" />
+            </div>
+        </div>
+
+        <br />
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a class="btn btn-default" href="/Post">Cancel</a>
+    </form>
+</div>

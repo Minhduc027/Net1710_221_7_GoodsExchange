@@ -153,8 +153,7 @@ namespace GoodsExchange.business
                 post.Title = postUpdate.Title;
                 post.Description = postUpdate.Description;
                 post.Address = postUpdate.Address;
-                post.Category = postUpdate.Category;
-                post.CategoryId = postUpdate.Category.CategoryId;
+                post.CategoryId = postUpdate.CategoryId;
                 unitOfWork.PostRepository.Update(post);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Post updated!", post);
