@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GoodsExchange.business.Interface
 {
-    internal interface IOfferBusiness
+    public interface IOfferBusiness
     {
         public Task<IGoodsExchangeResult> GetAll();
         public Task<IGoodsExchangeResult> Create(Offer offer);

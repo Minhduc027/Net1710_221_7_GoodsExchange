@@ -12,7 +12,7 @@ using GoodsExchange.data;
 
 namespace GoodsExchange.business
 {
-    internal class OfferBusiness : IOfferBusiness
+    public class OfferBusiness : IOfferBusiness
     {
         //private readonly Net1710_221_7_GoodsExchangeContext _context;
         //public OfferBusiness(Net1710_221_7_GoodsExchangeContext context)

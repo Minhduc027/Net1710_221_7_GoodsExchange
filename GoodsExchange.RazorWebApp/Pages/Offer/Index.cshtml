@@ -1,0 +1,43 @@
+﻿@page
+@model GoodsExchange.RazorWebApp.Pages.Offer.IndexModel
+
+@{
+    ViewData["Title"] = "Offers";
+}
+
+<h1>Offers</h1>
+
+@if (Model.Offers != null && Model.Offers.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Offer ID</th>
+                <th>Customer ID</th>
+                <th>Is Approved</th>
+                <th>Offer Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var offer in Model.Offers)
+            {
+                <tr>
+                    <td>@offer.OfferId</td>
+                    <td>@offer.CustomerId</td>
+                    <td>@offer.IsApproved</td>
+                    <td>@offer.OfferDate</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@offer.OfferId">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No offers available.</p>
+}
