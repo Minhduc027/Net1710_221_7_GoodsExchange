@@ -12,6 +12,7 @@ namespace GoodsExchange.data.Repository
     public class PostRepository: GenericRepository<Post>
     {
         public PostRepository() { }
+        public PostRepository(Net1710_221_7_GoodsExchangeContext context) => _context = context;
         public async Task<List<Post>> GetPostByCreateDateAsync(DateTime createDate)
         {
             return await _context.Posts.Where(p => p.CreateDate == createDate).ToListAsync();
