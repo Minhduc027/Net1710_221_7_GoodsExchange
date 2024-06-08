@@ -72,6 +72,11 @@ namespace GoodsExchange.business
             }
         }
 
+        public async Task<Customer> GetCustomerById(int customerId)
+        {
+            return await unitOfWork.CustomerRepository.GetByIdAsync(customerId);
+        }
+
         public async Task<IGoodsExchangeResult> UpdateCustomer(Customer customer)
         {
             try
