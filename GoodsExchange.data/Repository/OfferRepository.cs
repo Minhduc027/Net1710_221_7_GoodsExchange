@@ -14,17 +14,17 @@ namespace GoodsExchange.data.Repository
         public OfferRepository() { }
         public async Task<List<Offer>> GetApprovedOffersAsync()
         {
-            return await _dbSet.Where(o => o.IsApproved == true).ToListAsync();
+            return await _context.Offers.Where(o => o.IsApproved == true).ToListAsync();
         }
 
         public async Task<List<Offer>> GetOffersByCustomerIdAsync(int customerId)
         {
-            return await _dbSet.Where(o => o.CustomerId == customerId).ToListAsync();
+            return await _context.Offers.Where(o => o.CustomerId == customerId).ToListAsync();
         }
 
         public async Task<List<Offer>> GetLOffersWithDetailsAsync()
         {
-            return await _dbSet
+            return await _context.Offers
                 .Include(o => o.Customer)
                 .Include(o => o.OfferDetails)
                 .ToListAsync();
