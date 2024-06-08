@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IPostBusiness, PostBusiness>();
 builder.Services.AddScoped<ICategoryBusiness, CategoryBusiness>();
+builder.Services.AddScoped<IOfferBusiness, OfferBusiness>();
 //builder.Services.AddScoped<ICommentBusiness, CommentBusiness>();
 var app = builder.Build();
 
