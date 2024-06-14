@@ -51,6 +51,14 @@
                 <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Post.IsAvailable" class="control-label"></label>
+                <select asp-for="Post.IsAvailable" class="form-control">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+                <span asp-validation-for="Post.IsAvailable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

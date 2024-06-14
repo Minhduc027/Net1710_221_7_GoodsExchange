@@ -9,9 +9,9 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a class="btn btn-success btn-hover-secondary" asp-page="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
@@ -30,10 +30,7 @@
                 @Html.DisplayNameFor(model => model.Post[0].ExchangeDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].PostOwner)
+                @Html.DisplayNameFor(model => model.Post[0].UpVote)
             </th>
             <th></th>
         </tr>
@@ -47,7 +44,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
+                <td class="mw-100 text-wrap resize-both min-h-80">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
@@ -56,16 +53,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ExchangeDate)
             </td>
+                <td>
+                    <a class="btn btn-secondary btn-outline-success:hover" asp-page-handler="UpVote" asp-route-id="@item.PostId">UpVote</a>
+                </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostOwner.Address)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.PostId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.PostId">Delete</a>
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-primary mr-2 btn-outline-success:hover" asp-page="./Edit" asp-route-id="@item.PostId">Edit</a>||
+                        <a class="btn btn-info mr-2 btn-outline-success:hover" asp-page="./Details" asp-route-id="@item.PostId">Details</a>||
+                        <a class="btn btn-danger btn-outline-success:hover" asp-page="./Delete" asp-route-id="@item.PostId">Delete</a>
+                    </div>
             </td>
         </tr>
 }

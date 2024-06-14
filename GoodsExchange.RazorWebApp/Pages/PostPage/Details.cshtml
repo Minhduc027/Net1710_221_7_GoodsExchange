@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Details";
-    
+
 }
 
 <h1>Details</h1>
@@ -54,6 +54,63 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Customer.Name)
         </dd>
+        @* Update time *@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.UpdatedTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.UpdatedTime)
+        </dd>
+        @* UpdateAt *@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.UpdatedAt)
+        </dd>
+        @* Availabe until *@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.AvailableUntil)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.AvailableUntil)
+        </dd>
+        @* Up vote *@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.UpVote)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.UpVote)
+        </dd>
+        @* Availabe *@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.IsAvailable)
+        </dt>
+        <dd class="col-sm-10">
+            @* @Html.DisplayFor(model => model.Post.IsAvailable) *@
+                @{
+                    string isAvailableText = Model.Post.IsAvailable ? "Yes" : "No";
+                }
+                @Html.DisplayFor(model => isAvailableText)
+        </dd>
+        @* <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.Comments)
+        </dt>
+        <dd class="col-sm-10">
+        @if (Model.Comments != null)
+        {
+        <ul>
+        @foreach (var comment in Model.Comments)
+        {
+        <li>@comment.Content</li>
+        }
+        </ul>
+        }
+        else
+        {
+        <p>No comments!</p>
+        }
+        </dd> *@
     </dl>
 </div>
 <div>
