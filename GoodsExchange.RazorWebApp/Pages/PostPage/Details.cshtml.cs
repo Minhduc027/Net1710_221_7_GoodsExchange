@@ -44,7 +44,7 @@ namespace GoodsExchange.RazorWebApp.Pages.PostPage
                 Post = post.Data as Post;
                 var categoryData = await _categoryBusiness.GetCategoryById(Post.CategoryId);
                 Category = categoryData;
-                var customerData = await _customerBusiness.GetCustomerById(Post.PostOwnerId);
+                var customerData = await _customerBusiness.GetById(Post.PostOwnerId);
                 Customer = customerData;
             }
             return Page();
