@@ -12,6 +12,9 @@
                 <MenuItem Header="Posts" IsCheckable="False" FontSize="12" Click="Open_wPosts_Click">
 
                 </MenuItem>
+                <MenuItem Header="Customers" IsCheckable="False" FontSize="12" Click="Open_wCustomers_Click">
+
+                </MenuItem>
             </MenuItem>
 
         </Menu>

@@ -14,6 +14,8 @@ namespace GoodsExchange.business.Interface
         public Task<IGoodsExchangeResult> DeleteCustomer(int customerId);
         public Task<IGoodsExchangeResult> GetAllCustomer();
         public Task<IGoodsExchangeResult> UpdateCustomer(Customer customer);
-        public Task<Customer> GetCustomerById(int customerId);
+        public Task<IGoodsExchangeResult> GetCustomerById(int customerId);
+
+        public Task<Customer> GetById(int customerId);
     }
 }

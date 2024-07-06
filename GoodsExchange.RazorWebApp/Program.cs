@@ -10,6 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IPostBusiness, PostBusiness>();
 builder.Services.AddScoped<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddScoped<IOfferBusiness, OfferBusiness>();
+builder.Services.AddScoped<ICustomerBusiness, CustomerBusiness>();
 //builder.Services.AddScoped<ICommentBusiness, CommentBusiness>();
 var app = builder.Build();
 
