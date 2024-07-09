@@ -1,6 +1,7 @@
 using GoodsExchange.business;
 using GoodsExchange.business.Interface;
 using GoodsExchange.data.Models;
+using GoodsExchange.data.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,7 @@ builder.Services.AddScoped<IPostBusiness, PostBusiness>();
 builder.Services.AddScoped<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddScoped<IOfferBusiness, OfferBusiness>();
 builder.Services.AddScoped<ICustomerBusiness, CustomerBusiness>();
-//builder.Services.AddScoped<ICommentBusiness, CommentBusiness>();
+builder.Services.AddScoped<ICommentBusiness, CommentBusiness>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

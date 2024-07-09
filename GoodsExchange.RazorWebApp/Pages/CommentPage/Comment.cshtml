@@ -1,0 +1,71 @@
+﻿@page
+@model GoodsExchange.RazorWebApp.Pages.CommentPage.CommentModel
+
+@{
+    ViewData["Title"] = "Comment";
+}
+
+
+<h2>@Model.Post.Title</h2>
+<p>@Model.Post.Description</p>
+
+<div class="card mt-4" style="margin-bottom: 20px">
+    <div class="card-body">
+        <div class="align-items-start">
+            <p class="ms-3" style="font-weight:600; color: green; font-size:20px">Add a Comment</p>
+            <div class="flex-grow-1 ms-3">
+                <form method="post" asp-page-handler="AddComment">
+                    <input type="hidden" asp-for="Post.PostId" />
+                    <input asp-for="NewComment.Title" class="form-control" rows="3" placeholder="Add to the title" style="margin-bottom: 10px"/>
+                    <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="Add to the discussion"></textarea>
+                    <div class="d-flex justify-content-between mt-2">
+                        <div>
+                            <button class="btn btn-primary btn-sm">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@foreach (var comment in Model.Comment)
+{
+    <div class="card mb-3" id="comment-@comment.CommentId">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="card-title" style="font-weight:700">@comment.Customer.Name</p>
+                    <p class="card-text" id="comment-content-@comment.CommentId">@comment.Content</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-muted">@comment.DateTime.ToString("g")</span>
+                    <a class="btn btn-link" href="#" onclick="editComment(@comment.CommentId)">Edit</a>
+                </div>
+            </div>
+            <div id="edit-form-@comment.CommentId" style="display:none;">
+                <form method="post" asp-page-handler="Update" asp-route-id="@comment.CommentId">
+                    <input type="hidden" asp-for="Post.PostId" />
+                    <div class="form-group">
+                        <textarea name="Content" class="form-control" rows="3">@comment.Content</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    <a class="btn btn-link" href="#" onclick="cancelEdit(@comment.CommentId)">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function editComment(commentId) {
+        document.getElementById('comment-content-' + commentId).style.display = 'none';
+        document.getElementById('edit-form-' + commentId).style.display = 'block';
+    }
+
+    function cancelEdit(commentId) {
+        document.getElementById('comment-content-' + commentId).style.display = 'block';
+        document.getElementById('edit-form-' + commentId).style.display = 'none';
+    }
+</script>
