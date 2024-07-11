@@ -72,6 +72,28 @@ namespace GoodsExchange.business
             }
         }
 
+        public async Task<IGoodsExchangeResult> GetCustomerById(int customerId)
+        {
+            try
+            {
+                var result = await unitOfWork.CustomerRepository.GetByIdAsync(customerId);
+                if (result == null)
+                {
+                    return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
+                }
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Get customer by Id.", result);
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
+            }
+        }
+
+        public async Task<Customer> GetById(int customerId)
+        {
+            return await unitOfWork.CustomerRepository.GetByIdAsync(customerId);
+        }
+
         public async Task<IGoodsExchangeResult> UpdateCustomer(Customer customer)
         {
             try

@@ -35,7 +35,7 @@
      
                     <Label Grid.Column="0" Content="Category" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="0,39,0,-39" />
                     <TextBox Grid.Column="1" x:Name="txtCategoryId" Height="25" Text="{Binding Path=Post.CategoryId, Mode=TwoWay}"  Margin="5,56,0,-31"  Width="180" HorizontalAlignment="Left"/>
-                    
+                    <!--<ComboBox Grid.Column="1" x:Name="cmbCategory" Height="25" SelectedValuePath="CategoryId" DisplayMemberPath="CategoryName" Margin="5,56,0,-31" Width="180" HorizontalAlignment="Left" /> -->
                     <Label Grid.Column="2" Content="PostOwner" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="1,44,0,-44" />
                     <TextBox Grid.Column="3" x:Name="txtPostOwnerId" Height="25" Text="{Binding Path=Post.PostOwnerId, Mode=TwoWay}"  Margin="5,56,0,-31"  Width="180" HorizontalAlignment="Left"/>
                     <Label Grid.Column="4" Content="Address" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="1,44,0,-44" />
@@ -54,6 +54,7 @@
                         <DataGridTextColumn Header="Description" Binding="{Binding Path=Description}" Width="200"  IsReadOnly="True"/>
                         <DataGridTextColumn Header="Address" Binding="{Binding Path=Address}" Width="100"  IsReadOnly="True"/>
                         <DataGridTextColumn Header="CreateDate" Binding="{Binding Path=CreateDate}" Width="100"  IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Category" Binding="{Binding Path=CategoryId}" Width="100"  IsReadOnly="True"/>
                         <DataGridTemplateColumn Header="Delete" Width="50">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

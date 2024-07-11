@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace GoodsExchange.business.Interface
 {
-    internal interface ICustomerBusiness
+    public interface ICustomerBusiness
     {
         public Task<IGoodsExchangeResult> CreateCustomer(Customer customer);
         public Task<IGoodsExchangeResult> DeleteCustomer(int customerId);
         public Task<IGoodsExchangeResult> GetAllCustomer();
         public Task<IGoodsExchangeResult> UpdateCustomer(Customer customer);
+        public Task<IGoodsExchangeResult> GetCustomerById(int customerId);
+
+        public Task<Customer> GetById(int customerId);
     }
 }

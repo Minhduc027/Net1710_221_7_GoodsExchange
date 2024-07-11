@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsExchange.RazorWebApp",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodExchange.commons", "GoodExchange.commons\GoodExchange.commons.csproj", "{EDBEE242-6E5D-418A-B024-4D61FCDAC365}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodsExchange.WpfApp", "GoodsExchange.WpfApp\GoodsExchange.WpfApp.csproj", "{727122C8-6F41-4A30-8FA7-A9D65B36C446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsExchange.WpfApp", "GoodsExchange.WpfApp\GoodsExchange.WpfApp.csproj", "{727122C8-6F41-4A30-8FA7-A9D65B36C446}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

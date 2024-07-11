@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing.Design;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using GoodsExchange.business;
 using GoodsExchange.business.Interface;
 using GoodsExchange.data.Models;
@@ -23,8 +12,10 @@ namespace GoodsExchange.WpfApp.UI
     public partial class wPost : Window
     {
         private readonly IPostBusiness _postBusiness;
+        private readonly ICategoryBusiness _categoryBusiness;
         public wPost()
         {
+            _categoryBusiness = new CategoryBusiness();
             _postBusiness = new PostBusiness();
             InitializeComponent();
             this.LoadGrd();
@@ -34,69 +25,55 @@ namespace GoodsExchange.WpfApp.UI
         {
             try
             {
-                int tmpId = -1;
-                Post post;
+                Post post = new Post
+                {
+                    Title = txtTitle.Text,
+                    Description = txtDescription.Text,
+                    Address = txtAddress.Text,
+                    CategoryId = int.Parse(txtCategoryId.Text),
+                    PostOwnerId = int.Parse(txtPostOwnerId.Text),
+                    CreateDate = DateTime.Now
+                };
 
                 if (!string.IsNullOrWhiteSpace(txtPostId.Text))
                 {
-                    var item = await _postBusiness.GetById(int.Parse(txtPostId.Text));
-                    if (item.Data != null)
+                    post.PostId = int.Parse(txtPostId.Text);
+                    var updateResult = await _postBusiness.Update(post);
+                    if (updateResult.Status > 0)
                     {
-                        post = item.Data as Post;
-                        post.Title = txtTitle.Text;
-                        post.Description = txtDescription.Text;
-                        post.Address = txtAddress.Text;
-                        post.CategoryId = int.Parse(txtCategoryId.Text);
-                        post.PostOwnerId = int.Parse(txtPostOwnerId.Text);
-                        post.CreateDate = DateTime.Now;
-
-                        var result = await _postBusiness.Update(post);
-                        MessageBox.Show(result.Message, "Update");
+                        MessageBox.Show("Update Successfully!", "Update");
                     }
                     else
                     {
-                        post = new Post
-                        {
-                            Title = txtTitle.Text,
-                            Description = txtDescription.Text,
-                            Address = txtAddress.Text,
-                            CategoryId = int.Parse(txtCategoryId.Text),
-                            PostOwnerId = int.Parse(txtPostOwnerId.Text),
-                            CreateDate = DateTime.Now
-                        };
-                        var result = await _postBusiness.Create(post);
-                        MessageBox.Show(result.Message, "Save");
+                        MessageBox.Show(updateResult.Message, "Update Failed");
                     }
                 }
                 else
                 {
-                    post = new Post
+                    var createResult = await _postBusiness.Create(post);
+                    if (createResult.Status > 0)
                     {
-                        Title = txtTitle.Text,
-                        Description = txtDescription.Text,
-                        Address = txtAddress.Text,
-                        CategoryId = int.Parse(txtCategoryId.Text),
-                        PostOwnerId = int.Parse(txtPostOwnerId.Text),
-                        CreateDate = DateTime.Now
-                    };
-                    var result = await _postBusiness.Create(post);
-                    MessageBox.Show(result.Message, "Save");
+                        MessageBox.Show("Create Successfully!", "Save");
+                    }
+                    else
+                    {
+                        MessageBox.Show(createResult.Message, "Save Failed");
+                    }
                 }
 
-                txtTitle.Text = string.Empty;
-                txtPostOwnerId.Text = string.Empty;
-                txtPostId.Text = string.Empty;
-                txtDescription.Text = string.Empty;
-                txtCategoryId.Text = string.Empty;
-                txtAddress.Text = string.Empty;
+                ClearForm();
                 this.LoadGrd();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please enter valid values for CategoryId and PostOwnerId.", "Invalid Input");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error");
+                MessageBox.Show(ex.Message, "Error");
             }
         }
-        private async void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        private void ClearForm()
         {
             txtTitle.Text = string.Empty;
             txtPostOwnerId.Text = string.Empty;
@@ -105,17 +82,30 @@ namespace GoodsExchange.WpfApp.UI
             txtCategoryId.Text = string.Empty;
             txtAddress.Text = string.Empty;
         }
+        private async void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            ClearForm();
+            this.Close();
+        }
         private async void grdPost_MouseDouble_Click(object sender, RoutedEventArgs e)
         {
+            string CategoryName = null;
             var selectedPost = grdPost.SelectedItem as Post;
-
+            var category = await _categoryBusiness.GetAllCategory();
+            var categoryList = (List<Category>) category.Data;
+            foreach(var item in categoryList) {
+                if(item.CategoryId == selectedPost.CategoryId)
+                {
+                    CategoryName = item.CategoryName;
+                }
+            }
             if (selectedPost != null)
             {
                 // Cập nhật các trường tương ứng
                 txtPostId.Text = selectedPost.PostId.ToString();
                 txtTitle.Text = selectedPost.Title;
                 txtDescription.Text = selectedPost.Description;
-                txtCategoryId.Text = selectedPost.CategoryId.ToString();
+                txtCategoryId.Text = selectedPost.CategoryId.ToString(); //CategoryName; //
                 txtPostOwnerId.Text = selectedPost.PostOwnerId.ToString();
                 txtAddress.Text = selectedPost.Address;
             }

@@ -13,5 +13,6 @@ namespace GoodsExchange.business.Interface
         public Task<IGoodsExchangeResult> CreateCategory(Category category);
         public Task<IGoodsExchangeResult> UpdateCategory(Category category);
         public Task<IGoodsExchangeResult> DeleteCategory(int categoryId);
+        public Task<Category> GetCategoryById(int categoryId);
     }
 }

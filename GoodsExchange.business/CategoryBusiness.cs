@@ -71,6 +71,11 @@ namespace GoodsExchange.business
             }
         }
 
+        public Task<Category> GetCategoryById(int categoryId)
+        {
+            return unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
+        }
+
         public async Task<IGoodsExchangeResult> UpdateCategory(Category category)
         {
             try
