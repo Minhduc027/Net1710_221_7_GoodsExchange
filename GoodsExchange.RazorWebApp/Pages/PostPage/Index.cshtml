@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    
+
 }
 
 <h1>Index</h1>
@@ -36,34 +36,37 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Post) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-                <td class="mw-100 text-wrap resize-both min-h-80">
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExchangeDate)
-            </td>
+        @foreach (var item in Model.Post)
+        {
+            <tr>
                 <td>
-                    <a class="btn btn-secondary btn-outline-success:hover" asp-page-handler="UpVote" asp-route-id="@item.PostId">UpVote</a>
+                    @Html.DisplayFor(modelItem => item.Address)
                 </td>
-            <td>
-                    <div class="d-flex justify-content-end">
-                        <a class="btn btn-primary mr-2 btn-outline-success:hover" asp-page="./Edit" asp-route-id="@item.PostId">Edit</a>||
-                        <a class="btn btn-info mr-2 btn-outline-success:hover" asp-page="./Details" asp-route-id="@item.PostId">Details</a>||
-                        <a class="btn btn-danger btn-outline-success:hover" asp-page="./Delete" asp-route-id="@item.PostId">Delete</a>
-                    </div>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExchangeDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostOwner.Address)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.PostId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.PostId">Delete</a> |
+                    <a asp-page="/CommentPage/Comment" asp-route-id="@item.PostId">Comment</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

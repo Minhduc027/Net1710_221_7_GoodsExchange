@@ -19,6 +19,12 @@ namespace GoodsExchange.WpfApp
             p.Show();
         }
 
+        private void Open_wOffers_Click(object sender, RoutedEventArgs e)
+        {
+            var o = new wOffer();
+            o.Owner = this;
+            o.Show();
+        }
         private async void Open_wCustomers_Click(object sender, RoutedEventArgs e)
         {
             var p = new wCustomer();

@@ -30,6 +30,22 @@ namespace GoodsExchange.business
             _unitOfWork = new UnitOfWork();
         }
 
+        public async Task<IGoodsExchangeResult> GetById(int offerId)
+        {
+            try
+            {
+                var offer = await _unitOfWork.OfferRepository.GetByIdAsync(offerId);
+                if (offer == null)
+                {
+                    return new GoodsExchangeResult(-1, Constant.NOT_FOUND);
+                }
+                return new GoodsExchangeResult(0, Constant.SUCCESS, offer);
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(-1, Constant.ERROR_EXECUTING_TASK + ex.Message);
+            }
+        }
         public async Task<IGoodsExchangeResult> Create(Offer offer)
         {
             try
@@ -38,6 +54,7 @@ namespace GoodsExchange.business
                 //await _context.SaveChangesAsync();
                 //await _offerDAO.CreateAsync(offer);
                 _unitOfWork.OfferRepository.PrepareCreate(offer);
+                offer.OfferDate = DateTime.Now;
                 await _unitOfWork.OfferRepository.SaveAsync();
 
                 return new GoodsExchangeResult(0, Constant.CREATE_SUCCESS, offer);
@@ -91,6 +108,22 @@ namespace GoodsExchange.business
                 return new GoodsExchangeResult(-1, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
+        public async Task<IGoodsExchangeResult> GetAllCustomers()
+        {
+            try
+            {
+                var customers = await _unitOfWork.CustomerRepository.GetAllAsync();
+                if (customers == null || customers.Count == 0)
+                {
+                    return new GoodsExchangeResult(0, Constant.SUCCESS_EMPTY);
+                }
+                return new GoodsExchangeResult(0, Constant.SUCCESS, customers);
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(-1, Constant.ERROR_EXECUTING_TASK + ex.Message);
+            }
+        }
 
         public async Task<IGoodsExchangeResult> Update(Offer offer)
         {
@@ -106,7 +139,7 @@ namespace GoodsExchange.business
 
                 existingOffer.CustomerId = offer.CustomerId;
                 existingOffer.IsApproved = offer.IsApproved;
-                existingOffer.OfferDate = offer.OfferDate;
+                existingOffer.OfferDate = DateTime.Now;
 
                 //await _context.SaveChangesAsync();
                 //await _offerDAO.UpdateAsync(existingOffer);
