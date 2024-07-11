@@ -43,7 +43,7 @@ namespace GoodsExchange.RazorWebApp.Pages.OfferPage
             var customerResult = await _offerBusiness.GetAllCustomers();
             if (customerResult.Status == 0 && customerResult.Data != null)
             {
-                ViewData["CustomerId"] = new SelectList(customerResult.Data as List<Customer>, "CustomerId", "Address");
+                ViewData["CustomerId"] = new SelectList(customerResult.Data as List<Customer>, "CustomerId", "Name");
             }
             return Page();
         }

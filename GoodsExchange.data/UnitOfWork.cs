@@ -10,6 +10,7 @@ namespace GoodsExchange.data
         private CategoryRepository _categoryRepository;
         private OfferRepository _offerRepository;
         private CommentRepository _commentRepository;
+        private OfferDetailRepository _offerDetailRepository;
         public UnitOfWork(Net1710_221_7_GoodsExchangeContext context)
         {
             _context = context;
@@ -40,6 +41,10 @@ namespace GoodsExchange.data
         public CommentRepository CommentRepository
         {
             get { return _commentRepository ??= new CommentRepository(_context); }
+        }
+        public OfferDetailRepository OfferDetailRepository
+        {
+            get { return _offerDetailRepository ??= new OfferDetailRepository(); }
         }
 
 
