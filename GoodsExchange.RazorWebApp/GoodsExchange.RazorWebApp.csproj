@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.6" />
+=======
+>>>>>>> 68bb318c24aaf97699d9ace77d834a7269e35077
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -1,0 +1,62 @@
+﻿@page
+@model GoodsExchange.RazorWebApp.Pages.OfferPage.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Offers</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Offers[0].IsApproved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Offers[0].OfferDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Offers[0].Customer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="offerTableBody">
+        @foreach (var item in Model.Offers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsApproved)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OfferDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.Address)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.OfferId">Edit</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.OfferId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder().withUrl("/offerHub").build();
+
+        connection.on("OfferUpdated", function () {
+            location.reload();
+        });
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+}
