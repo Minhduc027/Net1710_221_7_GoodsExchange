@@ -27,5 +27,12 @@ namespace GoodsExchange.WpfApp
             p.Owner = this;
             p.Show();
         }
+
+        private void Open_wOffers_Click(object sender, RoutedEventArgs e)
+        {
+            var o = new wOffer();
+            o.Owner = this;
+            o.Show();
+        }
     }
 }

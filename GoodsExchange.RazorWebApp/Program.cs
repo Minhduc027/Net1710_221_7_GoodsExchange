@@ -1,6 +1,7 @@
 using GoodsExchange.business;
 using GoodsExchange.business.Interface;
 using GoodsExchange.data.Models;
+using GoodsExchange.RazorWebApp.Hubs;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddScoped<IPostBusiness, PostBusiness>();
 builder.Services.AddScoped<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddScoped<IOfferBusiness, OfferBusiness>();
 //builder.Services.AddScoped<ICommentBusiness, CommentBusiness>();
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,5 +32,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapHub<OfferHub>("/offerHub");
 
 app.Run();
