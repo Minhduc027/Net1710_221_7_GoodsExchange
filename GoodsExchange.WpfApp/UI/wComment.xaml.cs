@@ -106,7 +106,7 @@ namespace GoodsExchange.WpfApp.UI
 
         private async void grdPost_MouseDouble_Click(object sender, RoutedEventArgs e)
         {
-            var selectedComment = grdPost.SelectedItem as Comment;
+            var selectedComment = grdComment.SelectedItem as Comment;
             if (selectedComment != null)
             {
                 txtCommentId.Text = selectedComment.CommentId.ToString();
