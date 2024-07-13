@@ -1,0 +1,22 @@
+﻿@page "/"
+@model Equipments_CaoKhaSuong.Pages.LoginModel
+@{
+}
+
+<div class="m-5">
+    <h1>Login</h1>
+    <h4 class="text-danger">@ViewData["message"]</h4>
+    <form method="post">
+        <div>
+            <label asp-for="Email"></label>
+            <input class="form-control w-25" asp-for="Email" />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label>
+            <input class="form-control w-25" asp-for="Password" />
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+        <button class="btn btn-primary btn-block mt-4" type="submit">Login</button>
+    </form>
+</div>  
