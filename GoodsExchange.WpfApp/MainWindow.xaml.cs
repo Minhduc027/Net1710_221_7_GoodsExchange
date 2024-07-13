@@ -31,5 +31,12 @@ namespace GoodsExchange.WpfApp
             p.Owner = this;
             p.Show();
         }
+
+        private async void Open_wComment_Click(object sender, RoutedEventArgs e)
+        {
+            var p = new wComment();
+            p.Owner = this;
+            p.Show();
+        }
     }
 }

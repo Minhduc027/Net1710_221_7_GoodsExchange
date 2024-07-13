@@ -56,7 +56,7 @@ namespace GoodsExchange.business
             try
             {
                 await _unitOfWork.CommentRepository.CreateAsync(comment);
-                return new GoodsExchangeResult(0, "Get all comment successfully");
+                return new GoodsExchangeResult(0, "Create comment successfully");
 
             }
             catch (Exception ex)
