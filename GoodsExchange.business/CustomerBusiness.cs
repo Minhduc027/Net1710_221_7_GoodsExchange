@@ -122,5 +122,14 @@ namespace GoodsExchange.business
                 return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
+        public async Task<Customer> GetByEmail(string email, string phone)
+        {
+            var userInfo = await unitOfWork.CustomerRepository.GetByEmail(email, phone);
+            if(userInfo == null)
+            {
+                return null;
+            }
+            return userInfo;
+        }
     }
 }

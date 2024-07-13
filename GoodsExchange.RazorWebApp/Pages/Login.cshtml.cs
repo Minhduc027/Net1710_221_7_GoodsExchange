@@ -1,6 +1,4 @@
-using Business.Repository;
 using GoodsExchange.business.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -41,11 +39,11 @@ namespace Equipments_CaoKhaSuong.Pages
             {
                 var email = Email;
                 var password = Password;
-                var user = await _customerBusiness.GetById(email, password);
+                var user = await _customerBusiness.GetByEmail(email, password);
                 if (user != null)
                 {
                     HttpContext.Session.SetString("UserId", user.CustomerId.ToString());
-                    return 
+                    return Redirect("./Index");
                 }
                 else
                 {
