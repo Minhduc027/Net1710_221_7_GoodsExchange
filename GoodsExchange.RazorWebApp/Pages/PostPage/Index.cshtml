@@ -11,6 +11,12 @@
 <p>
     <a class="btn btn-success btn-hover-secondary" asp-page="Create">Create New</a>
 </p>
+<form method="post" asp-page-handler="Search" style="margin-top:10px">
+    <div class="form-group">
+        <input type="text" class="form-control" name="search" placeholder="Search posts..." />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
 <table class="table table-bordered table-hover">
     <thead>
         <tr>

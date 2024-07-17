@@ -15,5 +15,6 @@ namespace GoodsExchange.business.Interface
         public Task<IGoodsExchangeResult> UpdateComment(Comment comment);
         public Task<IGoodsExchangeResult> CreateComment(Comment comment);
         public Task<IGoodsExchangeResult> DeleteConmment(int commentId);
+        Task<IGoodsExchangeResult> SearchComment(string search);
     }
 }

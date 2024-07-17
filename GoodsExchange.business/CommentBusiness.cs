@@ -98,6 +98,20 @@ namespace GoodsExchange.business
             }
         }
 
+        public async Task<IGoodsExchangeResult> SearchComment(string search)
+        {
+            try
+            {
+                var existComment = await _unitOfWork.CommentRepository.SearchComments(search);
+                return new GoodsExchangeResult(0, "search comment successfully", existComment);
+
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(-1, $"Failed to search comment: {ex.Message}");
+            }
+        }
+
         public async Task<IGoodsExchangeResult> GetById(int id)
         {
             try

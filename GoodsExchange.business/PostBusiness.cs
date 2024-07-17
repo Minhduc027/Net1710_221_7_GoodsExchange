@@ -16,6 +16,20 @@ namespace GoodsExchange.business
             unitOfWork ??= new UnitOfWork();
         }
 
+        public async Task<IGoodsExchangeResult> SearchPost(string search)
+        {
+            try
+            {
+                var existComment = await unitOfWork.PostRepository.SearchPost(search);
+                return new GoodsExchangeResult(0, "search post successfully", existComment);
+
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(-1, $"Failed to search post: {ex.Message}");
+            }
+        }
+
         public async Task<IGoodsExchangeResult> Create(Post postCreate)
         {
             try

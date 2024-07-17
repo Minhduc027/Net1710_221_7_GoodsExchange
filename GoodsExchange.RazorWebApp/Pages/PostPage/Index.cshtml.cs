@@ -41,5 +41,25 @@ namespace GoodsExchange.RazorWebApp.Pages.PostPage
                 }
                 return Page();
         }
+
+        public async Task OnPostSearchAsync(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var result = await _postBusiness.SearchPost(search);
+                if (result != null)
+                {
+                    Post = (List<Post>)result.Data;
+                }
+            }
+            else
+            {
+                var a = await _postBusiness.GetAll();
+                if (a != null)
+                {
+                    Post = (List<Post>)a.Data;
+                }
+            }
+        }
     }
 }

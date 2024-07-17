@@ -49,10 +49,10 @@ namespace GoodsExchange.RazorWebApp.Pages.CommentPage
             {
                 return Page();
             }
-
+            var customerId = HttpContext.Session.GetString("UserId");
             NewComment.PostId = Post.PostId;
             NewComment.DateTime = DateTime.UtcNow;
-            NewComment.CustomerId = 1;
+            NewComment.CustomerId = int.Parse(customerId!);
             var result = await _commentBussiness.CreateComment(NewComment);
             if (result.Status == 0)
             {

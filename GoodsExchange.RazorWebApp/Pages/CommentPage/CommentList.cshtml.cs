@@ -44,5 +44,25 @@ namespace GoodsExchange.RazorWebApp.Pages.CommentPage
                 return Page();
             }
         }
+
+        public async Task OnPostSearchAsync(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var a = await _commentBussiness.SearchComment(search);
+                if (a != null)
+                {
+                    Comment = a.Data as IList<Comment>;
+                }
+            }
+            else
+            {
+                var a = await _commentBussiness.GetAllComments();
+                if (a != null)
+                {
+                    Comment = a.Data as IList<Comment>;
+                }
+            }
+        }
     }
 }

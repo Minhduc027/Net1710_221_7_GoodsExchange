@@ -25,5 +25,12 @@ namespace GoodsExchange.data.Repository
         {
             return await _context.Posts.Include(p => p.Comments).ToListAsync();
         }
+
+        public async Task<IList<Post>> SearchPost(string searchTerm)
+        {
+            return await _context.Set<Post>()
+                .Where(c => c.Title.Contains(searchTerm))
+                .ToListAsync();
+        }
     }
 }
