@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.OfferDetails[0].Note)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OfferDetails[0].PostId)
+                @Html.DisplayNameFor(model => model.OfferDetails[0].Post.Title)
             </th>
             <th></th>
         </tr>
@@ -55,7 +55,7 @@
                         @Html.DisplayFor(modelItem => item.Note)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PostId)
+                        @Html.DisplayFor(modelItem => item.Post.Title)
                     </td>
                     <td>
                         <a asp-page="Edit" asp-route-id="@item.OfferDetailId">Edit</a> |

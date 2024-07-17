@@ -21,7 +21,7 @@ namespace GoodsExchange.business
         {
             try
             {
-                var offerDetails = await _unitOfWork.OfferDetailRepository.GetAllAsync();
+                var offerDetails = await _unitOfWork.OfferDetailRepository.GetOfferDetailsWithDetailsAsync();
                 if (offerDetails == null || offerDetails.Count == 0)
                 {
                     return new GoodsExchangeResult(0, Constant.SUCCESS_EMPTY);
