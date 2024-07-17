@@ -122,5 +122,25 @@ namespace GoodsExchange.business
                 return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
         }
+
+        public async Task<IGoodsExchangeResult> SearchCustomersByName(string name)
+        {
+            try
+            {
+                // Thực hiện tìm kiếm khách hàng bằng tên
+                var customers = await unitOfWork.CustomerRepository.GetAllAsync(); // Lấy tất cả khách hàng
+
+                if (!string.IsNullOrEmpty(name))
+                {
+                    customers = customers.Where(c => c.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
+
+                return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Search customers by name.", customers);
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace GoodsExchange.WpfApp.UI
                 {
                     Name = txtName.Text,
                     Address = txtAddress.Text,
-                    Dob = DateOnly.FromDateTime(datePickerDob.SelectedDate.Value),
+                    Dob = datePickerDob.SelectedDate.Value,
                     Phone = txtPhone.Text,
                     Gender = Convert.ToInt32(cmbGender.SelectedValue),
                     Email = txtEmail.Text
@@ -97,7 +97,7 @@ namespace GoodsExchange.WpfApp.UI
                 txtCustomerId.Text = selectedCustomer.CustomerId.ToString();
                 txtName.Text = selectedCustomer.Name;
                 txtAddress.Text = selectedCustomer.Address;
-                datePickerDob.SelectedDate = selectedCustomer.Dob.ToDateTime(TimeOnly.MinValue);
+                datePickerDob.SelectedDate = selectedCustomer.Dob;
                 txtPhone.Text = selectedCustomer.Phone;
                 cmbGender.SelectedValue = selectedCustomer.Gender;
                 txtEmail.Text = selectedCustomer.Email;
@@ -111,10 +111,14 @@ namespace GoodsExchange.WpfApp.UI
             {
                 int customerId = (int)button.CommandParameter;
                 var result = await _customerBusiness.DeleteCustomer(customerId);
-                if (result.Data != null)
+                if (result.Status > 0)
                 {
                     MessageBox.Show(result.Message, "Delete!");
                     this.LoadGrd();
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Delete Failed");
                 }
             }
         }
@@ -122,10 +126,9 @@ namespace GoodsExchange.WpfApp.UI
         private async void LoadGrd()
         {
             var result = await _customerBusiness.GetAllCustomer();
-
             if (result.Status > 0 && result.Data != null)
             {
-                grdCustomer.ItemsSource = result.Data as List<Customer>;
+                grdCustomer.ItemsSource = result.Data;
             }
             else
             {
