@@ -64,11 +64,11 @@
                     @Html.DisplayFor(modelItem => item.UpVote)
                 </td>
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.PostId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.PostId">Delete</a> |
-                    <a asp-page="/CommentPage/Comment" asp-route-id="@item.PostId">Comment</a>
-                    <a asp-page="./Index" asp-page-handler="UpVote" asp-route-id="@item.PostId">UpVote</a>
+                    <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@item.PostId">Edit</a>
+                    <a class="btn btn-secondary btn-sm" asp-page="./Details" asp-route-id="@item.PostId">Details</a>
+                    <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.PostId">Delete</a>
+                    <a class="btn btn-info btn-sm" asp-page="/CommentPage/Comment" asp-route-id="@item.PostId">Comment</a>
+                    <a class="btn btn-success btn-sm" asp-page="./Index" asp-page-handler="UpVote" asp-route-id="@item.PostId">UpVote</a>
                 </td>
             </tr>
         }
