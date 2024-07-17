@@ -61,16 +61,14 @@
                     @Html.DisplayFor(modelItem => item.ExchangeDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PostOwner.Address)
+                    @Html.DisplayFor(modelItem => item.UpVote)
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |
                     <a asp-page="./Details" asp-route-id="@item.PostId">Details</a> |
                     <a asp-page="./Delete" asp-route-id="@item.PostId">Delete</a> |
                     <a asp-page="/CommentPage/Comment" asp-route-id="@item.PostId">Comment</a>
+                    <a asp-page="./Index" asp-page-handler="UpVote" asp-route-id="@item.PostId">UpVote</a>
                 </td>
             </tr>
         }
