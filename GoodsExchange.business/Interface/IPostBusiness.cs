@@ -11,6 +11,8 @@ namespace GoodsExchange.business.Interface
         public Task<IGoodsExchangeResult> Create(Post post);
         public Task<IGoodsExchangeResult> Update(Post post);
         public Task<IGoodsExchangeResult> Delete(int postId);
-        
+        public Task<IGoodsExchangeResult> UpVote(int postId);
+        Task<IGoodsExchangeResult> SearchPost(string search);
+
     }
 }

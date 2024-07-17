@@ -1,4 +1,5 @@
 ﻿using GoodsExchange.business.Interface;
+using GoodsExchange.data;
 using GoodsExchange.data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,21 +13,21 @@ namespace GoodsExchange.business
 {
     public class CommentBusiness : ICommentBusiness
     {
-        private readonly Net1710_221_7_GoodsExchangeContext _context;
+        private readonly UnitOfWork _unitOfWork;
 
 
-        public CommentBusiness(Net1710_221_7_GoodsExchangeContext context)
+        public CommentBusiness()
         {
-            _context = context;
+            _unitOfWork ??= new UnitOfWork();
         }
 
 
-        public async Task<IGoodsExchangeResult> GetAll()
+        public async Task<IGoodsExchangeResult> GetAllComments()
         {
 
             try
             {
-                var result = await _context.Comments.ToListAsync();
+                var result = await _unitOfWork.CommentRepository.GetAllComments();
                 return new GoodsExchangeResult(0, "Get all comment successfully", result);
 
             }
@@ -36,30 +37,11 @@ namespace GoodsExchange.business
             }
         }
 
-        public async Task<IGoodsExchangeResult> GetByDate(DateTime date)
+        public async Task<IGoodsExchangeResult> GetByPostId(int id)
         {
             try
             {
-                var result = await _context.Comments
-                    .Where(x => x.DateTime.Day == date.Day)
-                    .ToListAsync();
-                return new GoodsExchangeResult(0, "Get successfully", result);
-
-            }
-            catch (Exception ex)
-            {
-                return new GoodsExchangeResult(-1, $"Failed to get comment: {ex.Message}");
-            }
-        }
-
-        public async Task<IGoodsExchangeResult> GetById(int id)
-        {
-            try
-            {
-                var result = await _context.Comments
-                    .FindAsync(id);
-                if (result == null)
-                    return new GoodsExchangeResult(-1, "Comment didn't exist");
+                var result = await _unitOfWork.CommentRepository.GetByPostId(id);
                 return new GoodsExchangeResult(0, "Get all comment successfully", result);
 
             }
@@ -73,9 +55,8 @@ namespace GoodsExchange.business
         {
             try
             {
-               _context.Comments.Add(comment);
-                await _context.SaveChangesAsync();
-                return new GoodsExchangeResult(0, "Get all comment successfully");
+                await _unitOfWork.CommentRepository.CreateAsync(comment);
+                return new GoodsExchangeResult(0, "Create comment successfully");
 
             }
             catch (Exception ex)
@@ -88,16 +69,18 @@ namespace GoodsExchange.business
         {
             try
             {
-                var result = await _context.Comments
-                    .FindAsync(commentId);
-                if (result == null)
+                var Existed = await _unitOfWork.CommentRepository.GetByIdAsync(commentId);
+                if (Existed == null)
                     return new GoodsExchangeResult(-1, "Comment didn't exist");
-                return new GoodsExchangeResult(0, "Get all comment successfully");
+
+                var result = await _unitOfWork.CommentRepository.RemoveAsync(Existed);
+                
+                return new GoodsExchangeResult(0, "Delete comment successfully");
 
             }
             catch (Exception ex)
             {
-                return new GoodsExchangeResult(-1, $"Failed to get comment: {ex.Message}");
+                return new GoodsExchangeResult(-1, $"Failed to delete comment: {ex.Message}");
             }
         }
 
@@ -105,15 +88,39 @@ namespace GoodsExchange.business
         {
             try
             {
-                var existComment = await _context.Comments.FindAsync(comment.CommentId);
+                var existComment = await _unitOfWork.CommentRepository.UpdateAsync(comment);
+                return new GoodsExchangeResult(0, "Update comment successfully", existComment);
+
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(-1, $"Failed to update comment: {ex.Message}");
+            }
+        }
+
+        public async Task<IGoodsExchangeResult> SearchComment(string search)
+        {
+            try
+            {
+                var existComment = await _unitOfWork.CommentRepository.SearchComments(search);
+                return new GoodsExchangeResult(0, "search comment successfully", existComment);
+
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(-1, $"Failed to search comment: {ex.Message}");
+            }
+        }
+
+        public async Task<IGoodsExchangeResult> GetById(int id)
+        {
+            try
+            {
+                var existComment = await _unitOfWork.CommentRepository.GetByIdAsync(id);
                 if (existComment == null)
                 {
                     return new GoodsExchangeResult(-1, "Comment didn't exist");
                 }
-
-                existComment.Content = comment.Content;
-                existComment.Title = comment.Title;
-                await _context.SaveChangesAsync();
 
                 return new GoodsExchangeResult(0, "Update comment successfully", existComment);
 

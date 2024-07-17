@@ -19,5 +19,6 @@ namespace GoodsExchange.business.Interface
         public Task<Customer> GetById(int customerId);
 
         public Task<IGoodsExchangeResult> SearchCustomersByName(string name);
+        public Task<Customer> GetByEmail(string email, string phone);
     }
 }

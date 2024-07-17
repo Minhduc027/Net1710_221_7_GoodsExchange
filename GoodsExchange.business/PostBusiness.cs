@@ -16,6 +16,20 @@ namespace GoodsExchange.business
             unitOfWork ??= new UnitOfWork();
         }
 
+        public async Task<IGoodsExchangeResult> SearchPost(string search)
+        {
+            try
+            {
+                var existComment = await unitOfWork.PostRepository.SearchPost(search);
+                return new GoodsExchangeResult(0, "search post successfully", existComment);
+
+            }
+            catch (Exception ex)
+            {
+                return new GoodsExchangeResult(-1, $"Failed to search post: {ex.Message}");
+            }
+        }
+
         public async Task<IGoodsExchangeResult> Create(Post postCreate)
         {
             try
@@ -23,6 +37,10 @@ namespace GoodsExchange.business
                 //await _context.AddAsync(postCreate);
                 //await _context.SaveChangesAsync();
                 //int result = await _postDAO.CreateAsync(postCreate);
+                postCreate.UpdatedTime = 0;
+                postCreate.UpVote = 0;
+                postCreate.IsAvailable = true;
+                postCreate.AvailableUntil = DateTime.Now.AddYears(1);
                 int result = await unitOfWork.PostRepository.CreateAsync(postCreate);
                 if (result > 0) 
                 { 
@@ -154,6 +172,11 @@ namespace GoodsExchange.business
                 post.Description = postUpdate.Description;
                 post.Address = postUpdate.Address;
                 post.CategoryId = postUpdate.CategoryId;
+                post.UpdatedAt = postUpdate.UpdatedAt;
+                post.UpdatedTime = post.UpdatedTime + 1;
+                post.PostOwnerId = postUpdate.PostOwnerId;
+                post.ExchangeDate = postUpdate.ExchangeDate;
+                post.IsAvailable = postUpdate.IsAvailable;
                 unitOfWork.PostRepository.Update(post);
 
                 return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS + "Post updated!", post);
@@ -161,6 +184,18 @@ namespace GoodsExchange.business
             {
                 return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.ERROR_EXECUTING_TASK + ex.Message);
             }
+        }
+
+        public async Task<IGoodsExchangeResult> UpVote(int postId)
+        {
+            var post = await unitOfWork.PostRepository.GetByIdAsync(postId);
+            if (post == null)
+            {
+                return new GoodsExchangeResult(Constant.FAILED_STATUS, Constant.NOT_FOUND);
+            }
+            post.UpVote += 1;
+            unitOfWork.PostRepository.Update(post);
+            return new GoodsExchangeResult(Constant.SUCCESS_STATUS, Constant.SUCCESS +"Post updated!", post);
         }
     }
 }

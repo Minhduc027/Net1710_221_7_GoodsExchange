@@ -23,10 +23,11 @@ namespace GoodsExchange.RazorWebApp.Pages.PostPage
             _categoryBusiness ??= new CategoryBusiness();
             _customerBusiness ??= new CustomerBusiness();
         }
-
+        [BindProperty]
         public Post Post { get; set; } = default!;
         public Category Category { get; set; } = default!;
         public Customer Customer { get; set; } = default!;
+        public List<Comment> Comments { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -46,6 +47,7 @@ namespace GoodsExchange.RazorWebApp.Pages.PostPage
                 Category = categoryData;
                 var customerData = await _customerBusiness.GetById(Post.PostOwnerId);
                 Customer = customerData;
+                Comments = Post.Comments as List<Comment>;
             }
             return Page();
         }

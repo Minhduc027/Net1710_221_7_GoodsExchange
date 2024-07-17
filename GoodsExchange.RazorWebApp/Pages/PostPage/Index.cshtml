@@ -3,15 +3,21 @@
 
 @{
     ViewData["Title"] = "Index";
-    
+
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a class="btn btn-success btn-hover-secondary" asp-page="Create">Create New</a>
 </p>
-<table class="table">
+<form method="post" asp-page-handler="Search" style="margin-top:10px">
+    <div class="form-group">
+        <input type="text" class="form-control" name="search" placeholder="Search posts..." />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
@@ -30,44 +36,41 @@
                 @Html.DisplayNameFor(model => model.Post[0].ExchangeDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].PostOwner)
+                @Html.DisplayNameFor(model => model.Post[0].UpVote)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Post) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExchangeDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostOwner.Address)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.PostId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.PostId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Post)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExchangeDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpVote)
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@item.PostId">Edit</a>
+                    <a class="btn btn-secondary btn-sm" asp-page="./Details" asp-route-id="@item.PostId">Details</a>
+                    <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.PostId">Delete</a>
+                    <a class="btn btn-info btn-sm" asp-page="/CommentPage/Comment" asp-route-id="@item.PostId">Comment</a>
+                    <a class="btn btn-success btn-sm" asp-page="./Index" asp-page-handler="UpVote" asp-route-id="@item.PostId">UpVote</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

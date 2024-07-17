@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace GoodsExchange.business.Interface
 {
-    internal interface IOfferDetailBusiness
+    public interface IOfferDetailBusiness
     {
         public Task<IGoodsExchangeResult> GetAll();
+        public Task<IGoodsExchangeResult> GetById(int offerDetailId);
         public Task<IGoodsExchangeResult> Create(OfferDetail offerDetail);
         public Task<IGoodsExchangeResult> Update(OfferDetail offerDetail);
         public Task<IGoodsExchangeResult> Delete(int offerDetailId);

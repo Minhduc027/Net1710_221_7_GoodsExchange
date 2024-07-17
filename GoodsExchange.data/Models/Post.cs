@@ -22,6 +22,11 @@ public partial class Post
     public DateTime? ExchangeDate { get; set; }
 
     public int CategoryId { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? AvailableUntil { get; set; }
+    public int? UpdatedTime { get; set; }
+    public int? UpVote {  get; set; }
+    public bool IsAvailable { get; set; }
 
     public virtual Category Category { get; set; }
 

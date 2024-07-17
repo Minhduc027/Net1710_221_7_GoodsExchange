@@ -63,6 +63,8 @@ namespace GoodsExchange.RazorWebApp.Pages.PostPage
 
             try
             {
+                Post.UpdatedAt = DateTime.Now;
+                Post.UpdatedTime += 1;
                 await _postBusiness.Update(Post);
             }
             catch (DbUpdateConcurrencyException)

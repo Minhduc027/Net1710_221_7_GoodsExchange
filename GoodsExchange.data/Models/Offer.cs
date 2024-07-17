@@ -13,7 +13,7 @@ public partial class Offer
 
     public bool? IsApproved { get; set; }
 
-    public DateOnly? OfferDate { get; set; }
+    public DateTime OfferDate { get; set; }
 
     public virtual Customer Customer { get; set; }
 

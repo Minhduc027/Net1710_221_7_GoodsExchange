@@ -1,0 +1,83 @@
+﻿@page
+@model GoodsExchange.RazorWebApp.Pages.OfferDetailPage.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OfferDetails[0].OfferDetailId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OfferDetails[0].TraderItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OfferDetails[0].OfferId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OfferDetails[0].Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OfferDetails[0].Post.Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.OfferDetails == null || !Model.OfferDetails.Any())
+        {
+            <tr>
+                <td colspan="6">No offer details available.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OfferDetails.OrderByDescending(o => o.OfferDetailId))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfferDetailId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraderItem)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfferId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Post.Title)
+                    </td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@item.OfferDetailId">Edit</a> |
+                        <a asp-page="Delete" asp-route-id="@item.OfferDetailId">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+    <script type="text/javascript">
+        const connection = new signalR.HubConnectionBuilder().withUrl("/offerDetailHub").build();
+
+        connection.on("OfferDetailUpdated", function () {
+            location.reload();
+        });
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+}
