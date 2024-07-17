@@ -15,9 +15,9 @@
             <p class="ms-3" style="font-weight:600; color: green; font-size:20px">Add a Comment</p>
             <div class="flex-grow-1 ms-3">
                 <form method="post" asp-page-handler="AddComment">
-                    <input type="hidden" asp-for="Post.PostId" />
-                    <input asp-for="NewComment.Title" class="form-control" rows="3" placeholder="Add to the title" style="margin-bottom: 10px"/>
-                    <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="Add to the discussion"></textarea>
+                    <input type="hidden" asp-for="Post.PostId"/>
+                    <input asp-for="NewComment.Title" class="form-control" rows="3" placeholder="Add to the title" style="margin-bottom: 10px" required/>
+                    <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="Add to the discussion" required></textarea>
                     <div class="d-flex justify-content-between mt-2">
                         <div>
                             <button class="btn btn-primary btn-sm">Submit</button>
