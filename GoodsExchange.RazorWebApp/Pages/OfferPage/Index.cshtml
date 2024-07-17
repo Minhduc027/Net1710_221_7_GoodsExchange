@@ -25,23 +25,32 @@
         </tr>
     </thead>
     <tbody id="offerTableBody">
-        @foreach (var item in Model.Offers)
+        @if (Model.Offers == null || !Model.Offers.Any())
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsApproved)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OfferDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer.Name)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.OfferId">Edit</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.OfferId">Delete</a>
-                </td>
+                <td colspan="4">No offers available.</td>
             </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.Offers.OrderByDescending(o => o.OfferDate))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsApproved)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfferDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.Name)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.OfferId">Edit</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.OfferId">Delete</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

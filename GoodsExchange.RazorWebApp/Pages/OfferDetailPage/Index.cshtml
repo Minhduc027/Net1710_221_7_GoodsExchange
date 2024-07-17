@@ -31,29 +31,38 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.OfferDetails)
+        @if (Model.OfferDetails == null || !Model.OfferDetails.Any())
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OfferDetailId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TraderItem)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OfferId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Note)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PostId)
-                </td>
-                <td>
-                    <a asp-page="Edit" asp-route-id="@item.OfferDetailId">Edit</a> |
-                    <a asp-page="Delete" asp-route-id="@item.OfferDetailId">Delete</a>
-                </td>
+                <td colspan="6">No offer details available.</td>
             </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.OfferDetails.OrderByDescending(o => o.OfferDetailId))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfferDetailId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraderItem)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfferId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostId)
+                    </td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@item.OfferDetailId">Edit</a> |
+                        <a asp-page="Delete" asp-route-id="@item.OfferDetailId">Delete</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
